@@ -40,12 +40,11 @@ const LoggedInStatus = () => {
  *  - POST to the exchange endpoint, and get the next endpoint
  *  - PUT to the following endpoint
  */
-const handleExchange = async (discoveryEndpoint: string, addVpToWallet: (vp: any) => void) => {
-  const discoveryVpr = await global.fetch(discoveryEndpoint).then((response) => response.json());
-  const exchangeEndpoint = discoveryVpr.interact.service[0].serviceEndpoint;
+const handleExchange = async (vpRequest: any, addVpToWallet: (vp: any) => void) => {
+  const exchangeEndpoint = vpRequest.interact.service[0].serviceEndpoint;
   const initVpr = await global.fetch(exchangeEndpoint, {
     method: "POST",
-    body: JSON.stringify(discoveryVpr)
+    body: JSON.stringify(vpRequest)
   }).then((response) => response.json());
   const followUpEndpoint = initVpr.interact.service[0].serviceEndpoint;
   const responseVp = await global.fetch(followUpEndpoint, {
@@ -55,20 +54,20 @@ const handleExchange = async (discoveryEndpoint: string, addVpToWallet: (vp: any
 }
 
 const DiscoverExchange = (props: {addVpToWallet: (vp: any) => void}) => {
-  const [discoveryEndpoint, setDiscoveryEndpoint] = useState("http://localhost:3001/api/discover");
+  const [vpRequest, setVpRequest] = useState("");
 
   return (
     <form>
-      <input
-        type="text"
-        value={discoveryEndpoint}
+      <textarea
+        defaultValue="Your VP Request"
         onChange={(e) => {
-          setDiscoveryEndpoint(e.target.value);
+          setVpRequest(e.target.value);
         }}
-      />
+      >
+      </textarea>
       <button onClick={(e) => {  
         e.preventDefault();
-        handleExchange(discoveryEndpoint, props.addVpToWallet)
+        handleExchange(JSON.parse(vpRequest), props.addVpToWallet)
       }}>Perform exchange</button>
     </form>
   )
