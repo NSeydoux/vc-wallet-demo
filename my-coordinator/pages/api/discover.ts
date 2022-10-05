@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
-import { COORDINATOR_BASE_IRI } from '../../constants'
+import { COORDINATOR_BASE_IRI, discoveryVp } from '../../constants'
 
 // Initializing the cors middleware
 // You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
@@ -36,25 +36,5 @@ export default async function handler(
   await runMiddleware(req, res, cors)
 
   // Return the VP request interaction endpoint
-  res.json({
-    query: [
-      {
-        type: "QueryByExample",
-        credentialQuery: [
-          {
-            "example": {
-              "@context": ["https://www.w3.org/2018/credentials/v1"],
-              "type": "http://www.w3.org/TR/webid/",
-            }
-          }
-        ]
-      }
-    ],
-    interact: {
-      service: [{
-        type: "UnmediatedHttpPresentationService2021",
-        serviceEndpoint: new URL("exchanges/webid", COORDINATOR_BASE_IRI).href
-      }]
-    }
-  });
+  res.json(discoveryVp);
 }
