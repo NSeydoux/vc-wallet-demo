@@ -52,7 +52,7 @@ export default async function handler(
       service: [
         {
           type: "UnmediatedPresentationService2021",
-          serviceEndpoint: new URL("exchanges/webid/123", COORDINATOR_BASE_IRI).href
+          serviceEndpoint: new URL("api/exchanges/webid/123", COORDINATOR_BASE_IRI).href
         }
       ]
     }

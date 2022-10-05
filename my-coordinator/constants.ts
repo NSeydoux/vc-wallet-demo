@@ -1,5 +1,6 @@
+const IS_LOCAL = false;
 export const COORDINATOR_PORT = 3001;
-export const COORDINATOR_BASE_IRI = `http://localhost:${COORDINATOR_PORT}/api/`;
+export const COORDINATOR_BASE_IRI = IS_LOCAL ? `http://localhost:${COORDINATOR_PORT}/` : "https://vc-coordinator-demo.vercel.app/";
 
 export const discoveryVp = {
   query: [
@@ -18,7 +19,7 @@ export const discoveryVp = {
   interact: {
     service: [{
       type: "UnmediatedHttpPresentationService2021",
-      serviceEndpoint: new URL("exchanges/webid", COORDINATOR_BASE_IRI).href
+      serviceEndpoint: new URL("api/exchanges/webid", COORDINATOR_BASE_IRI).href
     }]
   }
 }
