@@ -44,6 +44,9 @@ const handleExchange = async (vpRequest: any, addVpToWallet: (vp: any) => void) 
   const exchangeEndpoint = vpRequest.interact.service[0].serviceEndpoint;
   const initVpr = await global.fetch(exchangeEndpoint, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(vpRequest)
   }).then((response) => response.json());
   const followUpEndpoint = initVpr.interact.service[0].serviceEndpoint;
