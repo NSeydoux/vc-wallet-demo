@@ -40,8 +40,7 @@ const LoggedInStatus = () => {
  *  - POST to the exchange endpoint, and get the next endpoint
  *  - PUT to the following endpoint
  */
-const handleExchange = async (e: MouseEvent, discoveryEndpoint: string, addVpToWallet: (vp: any) => void) => {
-  e.preventDefault();
+const handleExchange = async (discoveryEndpoint: string, addVpToWallet: (vp: any) => void) => {
   const discoveryVpr = await global.fetch(discoveryEndpoint).then((response) => response.json());
   const exchangeEndpoint = discoveryVpr.interact.service[0].serviceEndpoint;
   const initVpr = await global.fetch(exchangeEndpoint, {
@@ -67,7 +66,10 @@ const DiscoverExchange = (props: {addVpToWallet: (vp: any) => void}) => {
           setDiscoveryEndpoint(e.target.value);
         }}
       />
-      <button onClick={(e) => handleExchange(e, discoveryEndpoint, props.addVpToWallet)}>Perform exchange</button>
+      <button onClick={(e) => {  
+        e.preventDefault();
+        handleExchange(discoveryEndpoint, props.addVpToWallet)
+      }}>Perform exchange</button>
     </form>
   )
 }
