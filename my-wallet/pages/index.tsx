@@ -55,7 +55,6 @@ const handleExchange = async (vpRequest: any, addVpToWallet: (vp: any) => void) 
 
 const DiscoverExchange = (props: {addVpToWallet: (vp: any) => void}) => {
   const [vpRequest, setVpRequest] = useState("");
-
   return (
     <form>
       <textarea
