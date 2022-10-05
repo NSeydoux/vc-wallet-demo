@@ -1,9 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { Html5QrcodeScanner, Html5QrcodeScanType} from "html5-qrcode"
+import dynamic from 'next/dynamic'
 
 import { SessionProvider, LoginButton, LogoutButton, useSession } from "@inrupt/solid-ui-react";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import setupVpRequestScanner from '../components/qrcode-scanner'
 
 const LogButtonToggle = () => {
   const currentSession = useSession();
@@ -96,6 +99,12 @@ const PageContent = () => {
     setWallet((prev) => [...prev, vp])
   }
 
+  useEffect(() => {
+    setupVpRequestScanner((vp: any) => {
+      handleExchange(vp, addVpToWallet)
+    });
+  })
+
   return (
     <div className={styles.container}>
       <Head>
@@ -115,6 +124,8 @@ const PageContent = () => {
         <LoggedInStatus />
 
         <DiscoverExchange addVpToWallet={addVpToWallet}/>
+
+        <div id="reader"></div>
 
         <Wallet wallet={wallet} />
 
